@@ -1,0 +1,82 @@
+[
+  {
+    "question": "What types of cakes do you offer?",
+    "answer": "We offer a wide variety of cakes including chocolate, vanilla, red velvet, carrot, cheesecakes, fruit cakes, and seasonal specialty cakes. Our selection changes regularly to incorporate fresh seasonal ingredients and new flavors."
+  },
+  {
+    "question": "How do I place an order?",
+    "answer": "You can place an order easily through our website. Simply browse our selection, choose your desired cake, add it to your cart, and proceed to checkout. You'll need to provide delivery details and payment information to complete your order."
+  },
+  {
+    "question": "How far in advance should I order my cake?",
+    "answer": "For standard cakes, we recommend ordering at least 48 hours in advance. For custom or specialty cakes, we require at least 1 week notice. For wedding cakes or large event orders, please place your order 2-4 weeks in advance."
+  },
+  {
+    "question": "Do you offer delivery services?",
+    "answer": "Yes, we offer same-day delivery for orders placed before 10 AM, next-day delivery, and scheduled delivery for future dates. Delivery options may vary based on your location and the complexity of the cake you've ordered."
+  },
+  {
+    "question": "Do you ship cakes nationwide?",
+    "answer": "Currently, we only offer delivery within a 30-mile radius of our bakery. However, we do offer certain shelf-stable items like cookies and brownies that can be shipped nationwide."
+  },
+  {
+    "question": "How should I store my cake?",
+    "answer": "Most of our cakes should be refrigerated and consumed within 3-5 days for optimal freshness. Before serving, allow the cake to sit at room temperature for 30 minutes to enhance the flavors and texture."
+  },
+  {
+    "question": "Can I customize my cake?",
+    "answer": "Absolutely! We offer customization options for size, flavor, frosting, fillings, and decorations. For special requests or theme cakes, please contact our customer service team."
+  },
+  {
+    "question": "Do you accommodate dietary restrictions?",
+    "answer": "Yes, we offer gluten-free, vegan, dairy-free, nut-free, and reduced sugar options. Please specify any dietary requirements when placing your order, and we'll work to accommodate your needs."
+  },
+  {
+    "question": "What if my cake arrives damaged?",
+    "answer": "We have a 100% satisfaction guarantee. If your cake arrives damaged or you're not satisfied with your order, please contact us within 2 hours of delivery with photos, and we'll either replace your order or provide a full refund."
+  },
+  {
+    "question": "Do you offer cake tastings for wedding cakes?",
+    "answer": "Yes, we offer cake tasting sessions for wedding couples. The session includes samples of our most popular flavors, fillings, and frostings. Tastings are by appointment only and can be scheduled through our website."
+  },
+  {
+    "question": "What payment methods do you accept?",
+    "answer": "We accept all major credit cards, PayPal, and Apple Pay for online orders. For large corporate or wedding orders, we also offer invoicing options with a 50% deposit required."
+  },
+  {
+    "question": "Can I include a personalized message with my cake delivery?",
+    "answer": "Absolutely! During the checkout process, you'll have the option to add a personalized message card to your order at no extra cost. We can also write short messages directly on the cake for a small additional fee."
+  },
+  {
+    "question": "Do you offer mini cakes or cupcakes?",
+    "answer": "Yes, we offer cupcakes, cake pops, mini cakes, and other bite-sized desserts. These are perfect for parties, corporate events, or as individual treats."
+  },
+  {
+    "question": "What if the recipient isn't home when the cake is delivered?",
+    "answer": "Due to the perishable nature of our cakes, we require someone to be present to receive the delivery. If no one is available, please provide specific instructions during checkout or consider having it delivered to a location where someone will be present."
+  },
+  {
+    "question": "Do you offer corporate or event services?",
+    "answer": "Yes, we provide custom dessert spreads for corporate events, weddings, and other special occasions. We offer quantity discounts and custom branding options. Please contact our events team for more information and quotes."
+  },
+  {
+    "question": "How do I ensure my cake will be ready for a specific time?",
+    "answer": "When placing your order, you can specify a preferred delivery or pickup time. For time-sensitive events, we recommend scheduling delivery at least 1-2 hours before your event to allow for any unforeseen delays."
+  },
+  {
+    "question": "Can I track my order?",
+    "answer": "Yes, once your order is confirmed, you'll receive an order number that you can use to check the status of your cake. For deliveries, you'll receive a notification when your cake is out for delivery."
+  },
+  {
+    "question": "Do you offer special seasonal cakes?",
+    "answer": "Yes, we create seasonal specials throughout the year featuring fresh, in-season ingredients and holiday themes. Check our website or subscribe to our newsletter to stay updated on our seasonal offerings."
+  },
+  {
+    "question": "Do you offer cake subscriptions?",
+    "answer": "Yes, we offer monthly cake subscriptions where you can receive a different specialty cake each month. These make great gifts or regular treats for your home or office."
+  },
+  {
+    "question": "What's your return policy?",
+    "answer": "Due to the perishable nature of our cakes, we don't accept returns. However, if you're unsatisfied with your order, please contact us within 24 hours of delivery with photos, and we'll work to resolve the issue to your satisfaction."
+  }
+]

@@ -1,0 +1,4 @@
+langchain-chroma>=0.0.1
+langchain-google-genai>=0.0.1
+langchain-core>=0.1.0
+chromadb>=0.4.15
