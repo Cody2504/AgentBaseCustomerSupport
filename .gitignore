@@ -1,1 +1,4 @@
 .env
+cake_shop.db
+__pycache__
+.chroma_db

@@ -1,6 +1,7 @@
 from langchain_core.tools import tool
 from typing import List, Dict
 from vector_store import CakeShopVectorStore
+from database import db
 import json
 import os
 
@@ -37,13 +38,6 @@ def search_for_product_recommendations(description: str):
     """    
     return vector_store.query_inventories(description)
 
-customers_database = [
-    {"name": "John Doe", "postcode": "SW1A 1AA", "dob": "1990-01-01", "customer_id": "CUST001", "first_line_address": "123 Main St", "phone_number": "07712345678", "email": "john.doe@example.com"},
-    {"name": "Jane Smith", "postcode": "E1 6AN", "dob": "1985-05-15", "customer_id": "CUST002", "first_line_address": "456 High St", "phone_number": "07723456789", "email": "jane.smith@example.com"},
-]
-
-data_protection_checks = []
-
 @tool
 def data_protection_check(name: str, postcode: str, year_of_birth: int, month_of_birth: int, day_of_birth: int) -> Dict:
     """
@@ -59,24 +53,16 @@ def data_protection_check(name: str, postcode: str, year_of_birth: int, month_of
     Returns:
         Dict: Customer details (name, postcode, dob, customer_id, first_line_address, email)
     """
-    data_protection_checks.append(
-        {
-            'name': name,
-            'postcode': postcode,
-            'year_of_birth': year_of_birth,
-            'month_of_birth': month_of_birth,
-            'day_of_birth': day_of_birth
-        }
-    )
-    for customer in customers_database:
-        if (customer['name'].lower() == name.lower() and
-            customer['postcode'].lower() == postcode.lower() and
-            int(customer['dob'][0:4]) == year_of_birth and
-            int(customer["dob"][5:7]) == month_of_birth and
-            int(customer["dob"][8:10]) == day_of_birth):
-            return f"DPA check passed - Retrieved customer details:\n{customer}"
-
-    return "DPA check failed, no customer with these details found"
+    # Log the data protection check attempt
+    db.log_data_protection_check(name, postcode, year_of_birth, month_of_birth, day_of_birth)
+    
+    # Get customer from database
+    customer = db.get_customer_by_details(name, postcode, year_of_birth, month_of_birth, day_of_birth)
+    
+    if customer:
+        return f"DPA check passed - Retrieved customer details:\n{customer}"
+    else:
+        return "DPA check failed, no customer with these details found"
 
 @tool
 def create_new_customer(first_name: str, surname: str, year_of_birth: int, month_of_birth: int, day_of_birth: int, postcode: str, first_line_of_address: str, phone_number: str, email: str) -> str:
@@ -99,26 +85,10 @@ def create_new_customer(first_name: str, surname: str, year_of_birth: int, month
     """
     if len(phone_number) != 11:
         return "Phone number must be 11 digits"
-    customer_id = len(customers_database) + 1
-    customers_database.append({
-        'name': first_name + ' ' + surname,
-        'dob': f'{year_of_birth}-{month_of_birth:02}-{day_of_birth:02}',
-        'postcode': postcode,
-        'first_line_address': first_line_of_address,
-        'phone_number': phone_number,
-        'email': email,
-        'customer_id': f'CUST{customer_id}'
-    })
-    return f"Customer registered, with customer_id {f'CUST{customer_id}'}"
     
-orders_database = [
-    {"order_id": "ORD001", "customer_id": "CUST001", "status": "Processing", "items": ["C001"], "quantity": [1]},
-    {"order_id": "ORD002", "customer_id": "CUST002", "status": "Shipped", "items": ["C007", "C011"], "quantity": [1, 2]},
-    {"order_id": "ORD003", "customer_id": "CUST001", "status": "Delivered", "items": ["C015"], "quantity": [1]},
-    {"order_id": "ORD004", "customer_id": "CUST002", "status": "Processing", "items": ["C003", "C013", "C031"], "quantity": [1, 1, 2]}
-]
-
-
+    return db.create_customer(first_name, surname, year_of_birth, month_of_birth, 
+                             day_of_birth, postcode, first_line_of_address, phone_number, email)
+    
 @tool
 def retrieve_existing_customer_orders(customer_id: str) -> List[Dict]:
     """
@@ -130,7 +100,7 @@ def retrieve_existing_customer_orders(customer_id: str) -> List[Dict]:
     Returns:
         List[Dict]: All the orders associated with the customer_id passed in
     """
-    customer_orders = [order for order in orders_database if order['customer_id'] == customer_id]
+    customer_orders = db.get_customer_orders(customer_id)
     if not customer_orders:
         return f"No orders associated with this customer id: {customer_id}"
     return customer_orders
@@ -165,18 +135,31 @@ def place_order(items: Dict[str, int], customer_id: str) -> str:
     if availability_messages:
         return "Order cannot be placed due to the following issues: \n" + '\n'.join(availability_messages)
 
-    order_id = len(orders_database) + 1
-    orders_database.append(
-        {
-            'order_id': order_id,
-            'customer_id': customer_id,
-            'status': 'Waiting for payment',
-            'items': list(items.keys()),
-            'quantity': list(items.values())
-        }
-    )
-    # Update the inventory
-    for item_id, quantity in items.items():
-        inventory_item = [item for item in inventory_database if item['id'] == item_id][0]
-        inventory_item['quantity'] -= quantity
-    return f"Order with id {order_id} has been placed successfully"
+    # Create order in database
+    result = db.create_order(items, customer_id)
+    
+    # Update the inventory if order was created successfully
+    if "successfully" in result:
+        for item_id, quantity in items.items():
+            inventory_item = [item for item in inventory_database if item['id'] == item_id][0]
+            inventory_item['quantity'] -= quantity
+    
+    return result
+
+def get_all_customers() -> List[Dict]:
+    """
+    Retrieve all customers from the database.
+    
+    Returns:
+        List[Dict]: List of all customers with their details
+    """
+    return db.get_all_customers()
+
+def get_data_protection_check_logs() -> List[Dict]:
+    """
+    Retrieve all data protection check logs from the database.
+    
+    Returns:
+        List[Dict]: List of all DPA check attempts with timestamps
+    """
+    return db.get_data_protection_checks()

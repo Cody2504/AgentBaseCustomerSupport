@@ -3,6 +3,7 @@ from langgraph.graph import StateGraph, MessagesState
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.prebuilt import ToolNode
+from langsmith import traceable
 from tools import query_knowledge_base, search_for_product_recommendations, create_new_customer, data_protection_check, place_order, retrieve_existing_customer_orders
 from dotenv import load_dotenv
 load_dotenv()
@@ -36,10 +37,9 @@ llm = ChatGoogleGenerativeAI(
 
 tools = [query_knowledge_base, search_for_product_recommendations, data_protection_check, create_new_customer, place_order, retrieve_existing_customer_orders]
 
-
-llm_with_prompt = chat_template | llm.bind_tools(tools)
-
+@traceable(run_type="chain")
 def call_agent(message_state: MessagesState):
+    llm_with_prompt = chat_template | llm.bind_tools(tools)
     response = llm_with_prompt.invoke(message_state)    
     return {
         'messages': [response]

@@ -1,7 +1,7 @@
 import streamlit as st
 from chatbot import app
 from langchain_core.messages import AIMessage, HumanMessage
-from tools import customers_database, data_protection_checks
+from tools import get_all_customers, get_data_protection_check_logs
 
 st.set_page_config(layout='wide', page_title='Cake Shop Chatbot', page_icon='🍰')
 
@@ -35,7 +35,16 @@ with main_col:
         message_box.markdown(this_message.content)
 
 with right_col:
-    st.title('customers database')
-    st.write(customers_database)
-    st.title('data protection checks')
-    st.write(data_protection_checks)
+    st.title('Customers Database')
+    try:
+        customers_data = get_all_customers()
+        st.write(customers_data)
+    except Exception as e:
+        st.error(f"Error loading customers: {str(e)}")
+    
+    st.title('Data Protection Checks')
+    try:
+        dpa_checks = get_data_protection_check_logs()
+        st.write(dpa_checks)
+    except Exception as e:
+        st.error(f"Error loading DPA checks: {str(e)}")
